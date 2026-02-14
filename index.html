@@ -1,54 +1,503 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="PMUkpA-3qvrrrqMTCe4ZJo7_dZXFQLEFCxhjSLeYnYg" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="YOUR_CODE_HERE" />
-    
-    <title>Indexing API Technical Test - My Sandbox Site</title>
-    <meta name="description" content="This is a technical test page to verify the functionality of the Google Indexing API on a GitHub Pages subdomain.">
-    
-    <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 20px; color: #333; }
-        h1 { color: #2c3e50; }
-        .status-box { background: #f4f7f6; border-left: 5px solid #27ae60; padding: 15px; margin: 20px 0; }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>💌 A Letter For You</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      background: #1a0a2e;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ─── starry background ─── */
+    .stars {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .star {
+      position: absolute; border-radius: 50%;
+      background: white; animation: twinkle linear infinite;
+    }
+    @keyframes twinkle {
+      0%,100%{ opacity: 0.1; transform: scale(1); }
+      50%    { opacity: 0.9; transform: scale(1.4); }
+    }
+
+    /* ─── floating hearts ─── */
+    .heart-float {
+      position: fixed; pointer-events: none; z-index: 0;
+      font-size: 18px; animation: floatHeart linear infinite; opacity: 0;
+    }
+    @keyframes floatHeart {
+      0%  { transform: translateY(110vh); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.4; }
+      100%{ transform: translateY(-10vh); opacity: 0; }
+    }
+
+    /* ─── OUTER WRAPPER (center stage) ─── */
+    .stage {
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; gap: 24px;
+    }
+
+    /* ─── page counter ─── */
+    .page-dots {
+      display: flex; gap: 8px;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      transition: all 0.4s;
+    }
+    .dot.active { background: #ff6b9d; transform: scale(1.4); }
+    .dot.done   { background: rgba(255,107,157,0.45); }
+
+    /* ─── THE LETTER BOX ─── */
+    .letter-wrap {
+      width: min(340px, 90vw);
+      height: min(460px, 80vh);
+      perspective: 1200px;
+      position: relative;
+    }
+
+    .page {
+      position: absolute; inset: 0;
+      border-radius: 18px;
+      padding: 36px 30px 28px;
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none;
+      transform: rotateY(-90deg) scale(0.9);
+      transform-origin: left center;
+      transition: transform 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
+      will-change: transform, opacity;
+      overflow: hidden;
+    }
+    .page.active {
+      opacity: 1; pointer-events: all;
+      transform: rotateY(0deg) scale(1);
+    }
+    .page.exit {
+      opacity: 0; pointer-events: none;
+      transform: rotateY(90deg) scale(0.9);
+      transform-origin: right center;
+      transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+    }
+
+    /* page themes */
+    .page-1 { background: linear-gradient(145deg, #fff8e7, #ffecd2); }
+    .page-2 { background: linear-gradient(145deg, #fce4ec, #f8bbd9); }
+    .page-3 { background: linear-gradient(145deg, #ede7f6, #d1c4e9); }
+    .page-4 { background: linear-gradient(145deg, #e8f5e9, #c8e6c9); }
+    .page-5 { background: linear-gradient(145deg, #fff9c4, #fff176); }
+
+    /* ruled lines */
+    .page::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        transparent, transparent 37px, rgba(0,0,0,0.06) 37px, rgba(0,0,0,0.06) 38px
+      );
+      border-radius: 18px;
+      pointer-events: none;
+    }
+
+    /* red margin line */
+    .page::before {
+      content: '';
+      position: absolute; top: 0; bottom: 0; left: 60px;
+      width: 2px; background: rgba(255,100,100,0.2);
+      z-index: 1; pointer-events: none;
+    }
+
+    /* spiral holes */
+    .holes {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 46px;
+      display: flex; flex-direction: column;
+      justify-content: space-evenly; align-items: center;
+      z-index: 2; padding: 20px 0;
+    }
+    .hole {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #1a0a2e;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* content */
+    .page-content {
+      position: relative; z-index: 3;
+      flex: 1; display: flex; flex-direction: column;
+      padding-left: 18px;
+    }
+
+    .page-num {
+      font-size: 11px; font-weight: 700;
+      color: rgba(0,0,0,0.25); letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+
+    .page-body {
+      flex: 1;
+      font-family: 'Caveat', cursive;
+      font-size: clamp(19px, 4.5vw, 23px);
+      line-height: 1.85;
+      color: #3a2a4a;
+    }
+    .page-body .big  { font-size: clamp(26px,7vw,34px); font-weight: 700; display: block; margin-bottom: 12px; }
+    .page-body .pink { color: #e91e8c; font-weight: 700; }
+    .page-body .pur  { color: #7b2ff7; font-weight: 700; }
+    .page-body .grn  { color: #2e7d32; font-weight: 700; }
+    .page-body .accent { font-size: 1.15em; }
+
+    .doodle {
+      font-size: 32px; text-align: right;
+      margin-top: auto; padding-top: 12px;
+      animation: doodleBob 2s ease-in-out infinite;
+    }
+    @keyframes doodleBob {
+      0%,100%{ transform: rotate(-6deg) scale(1); }
+      50%    { transform: rotate(6deg) scale(1.1); }
+    }
+
+    /* ─── NEXT BUTTON ─── */
+    .btn-wrap {
+      width: min(340px, 90vw);
+      display: flex; justify-content: flex-end;
+    }
+    .btn-next {
+      background: linear-gradient(135deg, #ff6b9d, #c77dff);
+      color: white; border: none; border-radius: 50px;
+      padding: 13px 30px; font-family: 'Nunito', sans-serif;
+      font-weight: 800; font-size: 15px;
+      cursor: pointer; display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 6px 24px rgba(255,107,157,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-next:hover { transform: scale(1.06) translateY(-2px); box-shadow: 0 10px 32px rgba(255,107,157,0.5); }
+    .btn-next:active { transform: scale(0.96); }
+    .btn-next.hidden { visibility: hidden; }
+    .arrow { font-size: 18px; transition: transform 0.3s; }
+    .btn-next:hover .arrow { transform: translateX(4px); }
+
+    /* ─── CONFETTI ─── */
+    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 99; }
+
+    /* ─── DISCLAIMER page special styles ─── */
+    .disclaimer-badge {
+      display: inline-block;
+      background: #f9a825; color: #1a0a2e;
+      font-family: 'Nunito', sans-serif;
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 50px;
+      margin-bottom: 14px;
+    }
+    .mono {
+      font-family: 'Nunito', sans-serif !important;
+      font-size: clamp(13px, 3vw, 15px) !important;
+      line-height: 1.7 !important;
+      color: #3a2a4a !important;
+    }
+    .mono .clause { display: block; margin-bottom: 8px; padding-left: 14px; position: relative; }
+    .mono .clause::before { content: '§'; position: absolute; left: 0; color: #e91e8c; }
+    .sign-off {
+      font-family: 'Caveat', cursive;
+      font-size: 20px; color: #e91e8c; font-weight: 700;
+      margin-top: 10px; text-align: right;
+    }
+
+    /* page corner fold */
+    .page::after { border-radius: 18px 4px 4px 18px; }
+    .fold {
+      position: absolute; bottom: 0; right: 0;
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 0 0 28px 28px;
+      border-color: transparent transparent rgba(0,0,0,0.1) transparent;
+      border-radius: 0 0 18px 0;
+      z-index: 5;
+    }
+
+    /* envelope intro */
+    .envelope-screen {
+      position: fixed; inset: 0; z-index: 200;
+      background: #1a0a2e;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px; cursor: pointer;
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .envelope-screen.hide {
+      opacity: 0; transform: scale(1.08); pointer-events: none;
+    }
+    .env-emoji { font-size: 80px; animation: envBob 1.5s ease-in-out infinite; }
+    @keyframes envBob {
+      0%,100%{ transform: translateY(0) scale(1); }
+      50%    { transform: translateY(-12px) scale(1.06); }
+    }
+    .env-title {
+      font-family: 'Caveat', cursive; font-size: 32px;
+      color: white; font-weight: 700;
+    }
+    .env-hint {
+      font-size: 13px; color: rgba(255,255,255,0.4);
+      font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>Google Indexing API Test Environment</h1>
-    </header>
+<!-- stars -->
+<div class="stars" id="stars"></div>
+<!-- confetti -->
+<canvas id="confetti"></canvas>
 
-    <main>
-        <div class="status-box">
-            <strong>Verification Status:</strong> Property verified on GitHub Pages.
+<!-- ─── ENVELOPE INTRO SCREEN ─── -->
+<div class="envelope-screen" id="envScreen" onclick="openEnvelope()">
+  <div class="env-emoji">💌</div>
+  <div class="env-title">You've got a letter!</div>
+  <div class="env-hint">tap to open</div>
+</div>
+
+<!-- ─── MAIN STAGE ─── -->
+<div class="stage">
+
+  <!-- dots -->
+  <div class="page-dots" id="dots"></div>
+
+  <!-- letter box -->
+  <div class="letter-wrap">
+
+    <!-- PAGE 1 -->
+    <div class="page page-1 active" id="page-0">
+      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="page-content">
+        <div class="page-num">Page 1 of 5</div>
+        <div class="page-body">
+          <span class="big">Hello, Madam. 👋</span>
+          I know, I know —<br>
+          a <span class="pink">whole letter</span> just for you.<br><br>
+          Yes. You deserve it.<br>
+          (maybe more, but<br>
+          let's start here 😌)
+          <div class="doodle">🌸</div>
         </div>
+      </div>
+      <div class="fold"></div>
+    </div>
 
-        <section>
-            <h2>Purpose of this Page</h2>
-            <p>This page exists to test the <strong>Web Search Indexing API</strong>. By using a Service Account, we send a notification to Google to crawl this specific URL. This is a common practice for time-sensitive content like job postings or live event broadcasts.</p>
-        </section>
+    <!-- PAGE 2 -->
+    <div class="page page-2" id="page-1">
+      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="page-content">
+        <div class="page-num">Page 2 of 5</div>
+        <div class="page-body">
+          I've been meaning<br>
+          to say this for a<br>
+          <span class="pink">very long time...</span><br><br>
+          But every time<br>
+          I try, my brain just<br>
+          goes — <span class="accent">🫠 bloop.</span><br><br>
+          So I made this<br>
+          instead. 🤭
+          <div class="doodle">✨</div>
+        </div>
+      </div>
+      <div class="fold"></div>
+    </div>
 
-        <section>
-            <h2>Technical Details</h2>
-            <ul>
-                <li><strong>Host:</strong> GitHub Pages</li>
-                <li><strong>Method:</strong> HTML Meta Tag Verification</li>
-                <li><strong>API Version:</strong> V3</li>
-            </ul>
-        </section>
+    <!-- PAGE 3 -->
+    <div class="page page-3" id="page-2">
+      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="page-content">
+        <div class="page-num">Page 3 of 5</div>
+        <div class="page-body">
+          You make me smile<br>
+          like a complete<br>
+          <span class="pur">idiot</span> for no reason.<br><br>
+          And honestly?<br>
+          I don't mind one bit.<br><br>
+          You're kinda<br>
+          <span class="pur">different</span>. And that's<br>
+          my favourite thing. 🫶
+          <div class="doodle">💜</div>
+        </div>
+      </div>
+      <div class="fold"></div>
+    </div>
 
-        <article>
-            <h2>About Web Crawling</h2>
-            <p>Crawling is the process where Googlebot discovers new and updated pages to be added to the Google index. We use the Indexing API to expedite this process, moving a URL from 'Discovered' to 'Crawled' in minutes rather than days.</p>
-        </article>
-    </main>
+    <!-- PAGE 4 — I love you -->
+    <div class="page page-4" id="page-3">
+      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="page-content">
+        <div class="page-num">Page 4 of 5</div>
+        <div class="page-body">
+          Okay. Here it is.<br><br>
+          The thing I've been<br>
+          too nervous to say —<br><br>
+          <span class="grn" style="font-size:clamp(28px,8vw,38px);display:block;line-height:1.3;">
+            I love you. 💚
+          </span><br>
+          There. I said it.<br>
+          No taking it back 😄
+          <div class="doodle">🌿</div>
+        </div>
+      </div>
+      <div class="fold"></div>
+    </div>
 
-    <footer>
-        <p>&copy; 2026 Indexing Test Sandbox</p>
-    </footer>
+    <!-- PAGE 5 — Disclaimer -->
+    <div class="page page-5" id="page-4">
+      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <div class="page-content">
+        <div class="page-num">Page 5 of 5</div>
+        <div class="page-body">
+          <span class="disclaimer-badge">⚠️ Important Notice</span>
+          <div class="mono">
+            <span class="clause">This letter has been delivered in good faith & with maximum sincerity.</span>
+            <span class="clause">The sender does <strong>NOT</strong> have server storage, a database, or a cloud plan.</span>
+            <span class="clause">Your reply <em>cannot</em> be accepted here, unfortunately.</span>
+            <span class="clause">Please respond via <strong>WhatsApp / DM / IRL</strong> at your earliest convenience.</span>
+            <span class="clause">Silence will be interpreted as <em>processing time</em>. 🙂</span>
+          </div>
+          <div class="sign-off">— The Sender 💛</div>
+        </div>
+      </div>
+      <div class="fold"></div>
+    </div>
 
+  </div><!-- /letter-wrap -->
+
+  <!-- next button -->
+  <div class="btn-wrap">
+    <button class="btn-next" id="nextBtn" onclick="nextPage()">
+      Next page <span class="arrow">→</span>
+    </button>
+  </div>
+
+</div><!-- /stage -->
+
+<script>
+  /* ─── stars ─── */
+  const starContainer = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = 1 + Math.random() * 2.5;
+    s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-duration:${2+Math.random()*4}s;animation-delay:${Math.random()*5}s`;
+    starContainer.appendChild(s);
+  }
+
+  /* ─── floating hearts ─── */
+  const hEmojis = ['💖','💕','💗','🌸','✨','💫','💝'];
+  for (let i = 0; i < 12; i++) {
+    const h = document.createElement('div');
+    h.className = 'heart-float';
+    h.textContent = hEmojis[Math.floor(Math.random() * hEmojis.length)];
+    h.style.cssText = `left:${Math.random()*100}vw;animation-duration:${10+Math.random()*10}s;animation-delay:${Math.random()*10}s`;
+    document.body.appendChild(h);
+  }
+
+  /* ─── page logic ─── */
+  const TOTAL = 5;
+  let current = 0;
+
+  const dotsEl = document.getElementById('dots');
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.id = 'dot-' + i;
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots() {
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.getElementById('dot-' + i);
+      d.className = 'dot' + (i === current ? ' active' : i < current ? ' done' : '');
+    }
+  }
+
+  function nextPage() {
+    if (current >= TOTAL - 1) return;
+    const leaving = document.getElementById('page-' + current);
+    leaving.classList.remove('active');
+    leaving.classList.add('exit');
+    setTimeout(() => leaving.classList.remove('exit'), 600);
+
+    current++;
+    const arriving = document.getElementById('page-' + current);
+    arriving.classList.add('active');
+    updateDots();
+
+    // last page — hide next button, launch confetti
+    if (current === TOTAL - 1) {
+      document.getElementById('nextBtn').classList.add('hidden');
+      launchConfetti();
+    }
+    // page 4 (I love you) — mini confetti
+    if (current === 3) smallConfetti();
+  }
+
+  /* ─── envelope open ─── */
+  function openEnvelope() {
+    document.getElementById('envScreen').classList.add('hide');
+  }
+
+  /* ─── confetti ─── */
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function spawnParticles(n, colors) {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    for (let i = 0; i < n; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: -20,
+        w: 6 + Math.random() * 10, h: 4 + Math.random() * 6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        angle: Math.random() * 360,
+        spin: (Math.random() - 0.5) * 7,
+        vx: (Math.random() - 0.5) * 5,
+        vy: 2 + Math.random() * 4,
+        life: 1
+      });
+    }
+    requestAnimationFrame(drawConfetti);
+  }
+
+  function launchConfetti() {
+    spawnParticles(200, ['#ff6b9d','#ffd93d','#6bcb77','#c77dff','#ffb347','#4cc9f0','#ff85b3']);
+  }
+  function smallConfetti() {
+    spawnParticles(80, ['#2e7d32','#a5d6a7','#ffeb3b','#ffffff']);
+  }
+
+  function drawConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles = particles.filter(p => p.y < canvas.height + 20);
+    particles.forEach(p => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle * Math.PI / 180);
+      ctx.fillStyle = p.color; ctx.globalAlpha = 0.88;
+      ctx.beginPath(); ctx.ellipse(0,0,p.w/2,p.h/2,0,0,2*Math.PI); ctx.fill();
+      ctx.restore();
+      p.x += p.vx; p.y += p.vy; p.angle += p.spin;
+    });
+    if (particles.length) requestAnimationFrame(drawConfetti);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+</script>
 </body>
 </html>
