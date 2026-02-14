@@ -83,7 +83,14 @@
     .page.active {
       opacity: 1; pointer-events: all;
       transform: rotateY(0deg) scale(1);
+      animation: bouncePage 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
+@keyframes bouncePage {
+  0%  { transform: scale(0.6) rotate(-4deg); opacity: 0; }
+  50% { transform: scale(1.07) rotate(2deg); opacity: 1; }
+  75% { transform: scale(0.96) rotate(-1deg); }
+  100%{ transform: scale(1) rotate(0deg); opacity: 1; }
+}
     .page.exit {
       opacity: 0; pointer-events: none;
       transform: rotateY(90deg) scale(0.9);
@@ -252,6 +259,21 @@
       animation: blink 1.5s ease-in-out infinite;
     }
     @keyframes blink { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
+    /* ── Corner Doodles ── */
+.doodle-corner {
+  position: absolute;
+  font-size: 22px;
+  pointer-events: none;
+  z-index: 6;
+  animation: doodleSpin 4s ease-in-out infinite;
+}
+@keyframes doodleSpin {
+  0%,100% { transform: rotate(-10deg) scale(1); }
+  50%     { transform: rotate(10deg) scale(1.15); }
+}
+.doodle-tl { top: 10px;  left: 52px;  animation-delay: 0s; }
+.doodle-tr { top: 10px;  right: 10px; animation-delay: 0.4s; }
+.doodle-bl { bottom: 10px; left: 52px;  animation-delay: 0.8s; }
   </style>
 </head>
 <body>
@@ -280,6 +302,9 @@
     <!-- PAGE 1 -->
     <div class="page page-1 active" id="page-0">
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <span class="doodle-corner doodle-tl">🌸</span>
+      <span class="doodle-corner doodle-tr">⭐</span>
+      <span class="doodle-corner doodle-bl">🎀</span>
       <div class="page-content">
         <div class="page-body">
           <span class="big">Hello, Madam. 👋</span>
@@ -297,6 +322,9 @@
     <!-- PAGE 2 -->
     <div class="page page-2" id="page-1">
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <span class="doodle-corner doodle-tl">💕</span>
+      <span class="doodle-corner doodle-tr">🌙</span>
+      <span class="doodle-corner doodle-bl">✨</span>
       <div class="page-content">
         <div class="page-body">
           Ethuvum shock lam avanthinga<br>
@@ -316,6 +344,10 @@
     <!-- PAGE 3 -->
     <div class="page page-3" id="page-2">
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <span class="doodle-corner doodle-tl">💜</span>
+      <span class="doodle-corner doodle-tr">🦋</span>
+      <span class="doodle-corner doodle-bl">🌟</span>
+
       <div class="page-content">
         <div class="page-body">
           na etho romba easya sollten<br>
@@ -335,6 +367,10 @@
     <!-- PAGE 4 — I love you -->
     <div class="page page-4" id="page-3">
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <span class="doodle-corner doodle-tl">💚</span>
+      <span class="doodle-corner doodle-tr">🌿</span>
+      <span class="doodle-corner doodle-bl">🍀</span>
+
       <div class="page-content">
         <div class="page-body">
           So, ippave solliren<br><br>
@@ -354,6 +390,9 @@
     <!-- PAGE 5 — Disclaimer -->
     <div class="page page-5" id="page-4">
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <span class="doodle-corner doodle-tl">⚠️</span>
+      <span class="doodle-corner doodle-tr">📋</span>
+      <span class="doodle-corner doodle-bl">💛</span>
       <div class="page-content">
         <div class="page-body">
           <span class="disclaimer-badge">⚠️ Important Notice</span>
@@ -421,27 +460,59 @@
     }
   }
 
+  function typewritePage(pageIndex) {
+    const page = document.getElementById('page-' + pageIndex);
+    const body = page.querySelector('.page-body');
+    if (!body) return;
+    const original = body.innerHTML;
+    // strip to plain text nodes only, preserve doodle div
+    const doodle = body.querySelector('.doodle');
+    const doodleHTML = doodle ? doodle.outerHTML : '';
+    // get text content with spans preserved via a temp trick
+    const temp = document.createElement('div');
+    temp.innerHTML = original.replace(doodle ? doodle.outerHTML : '__NO_DOODLE__', '');
+    const fullHTML = temp.innerHTML;
+    body.innerHTML = '<span id="tw-target"></span>' + doodleHTML;
+    const target = document.getElementById('tw-target');
+    // type char by char using innerHTML stream
+    let i = 0; let rendered = '';
+    const chars = fullHTML.split('');
+    let insideTag = false;
+    function type() {
+      if (i >= chars.length) return;
+      const ch = chars[i];
+      if (ch === '<') insideTag = true;
+      if (!insideTag) {
+        rendered += ch;
+        target.innerHTML = rendered;
+      } else {
+        let tag = '';
+        while (i < chars.length && chars[i] !== '>') { tag += chars[i]; i++; }
+        tag += '>'; rendered += tag; target.innerHTML = rendered; insideTag = false;
+      }
+      i++;
+      setTimeout(type, insideTag ? 0 : 28);
+    }
+    type();
+  }
+
   function nextPage() {
     if (current >= TOTAL - 1) return;
     const leaving = document.getElementById('page-' + current);
     leaving.classList.remove('active');
     leaving.classList.add('exit');
     setTimeout(() => leaving.classList.remove('exit'), 600);
-
     current++;
     const arriving = document.getElementById('page-' + current);
     arriving.classList.add('active');
     updateDots();
-
-    // last page — hide next button, launch confetti
+    typewritePage(current);
     if (current === TOTAL - 1) {
       document.getElementById('nextBtn').classList.add('hidden');
       launchConfetti();
     }
-    // page 4 (I love you) — mini confetti
     if (current === 3) smallConfetti();
   }
-
   /* ─── envelope open ─── */
   function openEnvelope() {
     document.getElementById('envScreen').classList.add('hide');
@@ -493,6 +564,60 @@
     if (particles.length) requestAnimationFrame(drawConfetti);
     else ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
+</script>
+  <!-- EMOJI BURST + CURSOR TRAIL -->
+<canvas id="trailCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:998;"></canvas>
+<script>
+  // ── Cursor Trail ──
+  const tc = document.getElementById('trailCanvas');
+  const tx = tc.getContext('2d');
+  tc.width = window.innerWidth; tc.height = window.innerHeight;
+  window.addEventListener('resize', () => { tc.width = window.innerWidth; tc.height = window.innerHeight; });
+  let trail = [];
+  const trailEmojis = ['💖','✨','💫','🌸','⭐','💕'];
+  document.addEventListener('mousemove', e => {
+    trail.push({ x: e.clientX, y: e.clientY, emoji: trailEmojis[Math.floor(Math.random()*trailEmojis.length)], life: 1, size: 14+Math.random()*10 });
+    if (trail.length > 18) trail.shift();
+  });
+  document.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    trail.push({ x: t.clientX, y: t.clientY, emoji: trailEmojis[Math.floor(Math.random()*trailEmojis.length)], life: 1, size: 14+Math.random()*10 });
+    if (trail.length > 18) trail.shift();
+  }, { passive: true });
+  function drawTrail() {
+    tx.clearRect(0, 0, tc.width, tc.height);
+    trail.forEach((p, i) => {
+      tx.globalAlpha = p.life * 0.8;
+      tx.font = `${p.size}px serif`;
+      tx.fillText(p.emoji, p.x - p.size/2, p.y + p.size/2);
+      p.life -= 0.06;
+    });
+    trail = trail.filter(p => p.life > 0);
+    requestAnimationFrame(drawTrail);
+  }
+  drawTrail();
+
+  // ── Emoji Burst on Click ──
+  const burstEmojis = ['💖','💗','💕','✨','💫','🌸','🎀','⭐','🥰','💝','🌟','🎊'];
+  document.addEventListener('click', e => {
+    if (e.target.closest('#nextBtn') || e.target.closest('#envScreen')) return;
+    for (let i = 0; i < 10; i++) {
+      const el = document.createElement('div');
+      const angle = (Math.PI * 2 / 10) * i;
+      const dist = 55 + Math.random() * 55;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+      const size = 16 + Math.random() * 16;
+      el.textContent = burstEmojis[Math.floor(Math.random() * burstEmojis.length)];
+      el.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;font-size:${size}px;pointer-events:none;z-index:997;transition:transform 0.6s ease-out,opacity 0.6s ease-out;transform:translate(-50%,-50%);`;
+      document.body.appendChild(el);
+      requestAnimationFrame(() => {
+        el.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+        el.style.opacity = '0';
+      });
+      setTimeout(() => el.remove(), 650);
+    }
+  });
 </script>
 </body>
 </html>
