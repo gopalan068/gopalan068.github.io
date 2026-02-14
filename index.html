@@ -17,10 +17,7 @@
       position: relative;
     }
 
-    /* ─── starry background ─── */
-    .stars {
-      position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    }
+    .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
     .star {
       position: absolute; border-radius: 50%;
       background: white; animation: twinkle linear infinite;
@@ -30,7 +27,6 @@
       50%    { opacity: 0.9; transform: scale(1.4); }
     }
 
-    /* ─── floating hearts ─── */
     .heart-float {
       position: fixed; pointer-events: none; z-index: 0;
       font-size: 18px; animation: floatHeart linear infinite; opacity: 0;
@@ -42,16 +38,12 @@
       100%{ transform: translateY(-10vh); opacity: 0; }
     }
 
-    /* ─── OUTER WRAPPER (center stage) ─── */
     .stage {
       position: relative; z-index: 10;
       display: flex; flex-direction: column; align-items: center; gap: 24px;
     }
 
-    /* ─── page counter ─── */
-    .page-dots {
-      display: flex; gap: 8px;
-    }
+    .page-dots { display: flex; gap: 8px; }
     .dot {
       width: 8px; height: 8px; border-radius: 50%;
       background: rgba(255,255,255,0.25);
@@ -60,7 +52,6 @@
     .dot.active { background: #ff6b9d; transform: scale(1.4); }
     .dot.done   { background: rgba(255,107,157,0.45); }
 
-    /* ─── THE LETTER BOX ─── */
     .letter-wrap {
       width: min(340px, 90vw);
       height: min(460px, 80vh);
@@ -85,12 +76,12 @@
       transform: rotateY(0deg) scale(1);
       animation: bouncePage 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
-@keyframes bouncePage {
-  0%  { transform: scale(0.6) rotate(-4deg); opacity: 0; }
-  50% { transform: scale(1.07) rotate(2deg); opacity: 1; }
-  75% { transform: scale(0.96) rotate(-1deg); }
-  100%{ transform: scale(1) rotate(0deg); opacity: 1; }
-}
+    @keyframes bouncePage {
+      0%  { transform: scale(0.6) rotate(-4deg); opacity: 0; }
+      50% { transform: scale(1.07) rotate(2deg); opacity: 1; }
+      75% { transform: scale(0.96) rotate(-1deg); }
+      100%{ transform: scale(1) rotate(0deg); opacity: 1; }
+    }
     .page.exit {
       opacity: 0; pointer-events: none;
       transform: rotateY(90deg) scale(0.9);
@@ -98,25 +89,21 @@
       transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
     }
 
-    /* page themes */
     .page-1 { background: linear-gradient(145deg, #fff8e7, #ffecd2); }
     .page-2 { background: linear-gradient(145deg, #fce4ec, #f8bbd9); }
     .page-3 { background: linear-gradient(145deg, #ede7f6, #d1c4e9); }
     .page-4 { background: linear-gradient(145deg, #e8f5e9, #c8e6c9); }
     .page-5 { background: linear-gradient(145deg, #fff9c4, #fff176); }
 
-    /* ruled lines */
     .page::after {
       content: '';
       position: absolute; inset: 0;
       background: repeating-linear-gradient(
         transparent, transparent 37px, rgba(0,0,0,0.06) 37px, rgba(0,0,0,0.06) 38px
       );
-      border-radius: 18px;
+      border-radius: 18px 4px 4px 18px;
       pointer-events: none;
     }
-
-    /* red margin line */
     .page::before {
       content: '';
       position: absolute; top: 0; bottom: 0; left: 60px;
@@ -124,7 +111,6 @@
       z-index: 1; pointer-events: none;
     }
 
-    /* spiral holes */
     .holes {
       position: absolute; left: 0; top: 0; bottom: 0;
       width: 46px;
@@ -138,17 +124,10 @@
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
     }
 
-    /* content */
     .page-content {
       position: relative; z-index: 3;
       flex: 1; display: flex; flex-direction: column;
       padding-left: 18px;
-    }
-
-    .page-num {
-      font-size: 11px; font-weight: 700;
-      color: rgba(0,0,0,0.25); letter-spacing: 1px;
-      text-transform: uppercase; margin-bottom: 20px;
     }
 
     .page-body {
@@ -158,11 +137,11 @@
       line-height: 1.85;
       color: #3a2a4a;
     }
-    .page-body .big  { font-size: clamp(26px,7vw,34px); font-weight: 700; display: block; margin-bottom: 12px; }
-    .page-body .pink { color: #e91e8c; font-weight: 700; }
-    .page-body .pur  { color: #7b2ff7; font-weight: 700; }
-    .page-body .grn  { color: #2e7d32; font-weight: 700; }
-    .page-body .accent { font-size: 1.15em; }
+    .page-body .big   { font-size: clamp(26px,7vw,34px); font-weight: 700; display: block; margin-bottom: 12px; }
+    .page-body .pink  { color: #e91e8c; font-weight: 700; }
+    .page-body .pur   { color: #7b2ff7; font-weight: 700; }
+    .page-body .grn   { color: #2e7d32; font-weight: 700; }
+    .page-body .accent{ font-size: 1.15em; }
 
     .doodle {
       font-size: 32px; text-align: right;
@@ -174,7 +153,6 @@
       50%    { transform: rotate(6deg) scale(1.1); }
     }
 
-    /* ─── NEXT BUTTON ─── */
     .btn-wrap {
       width: min(340px, 90vw);
       display: flex; justify-content: flex-end;
@@ -194,10 +172,8 @@
     .arrow { font-size: 18px; transition: transform 0.3s; }
     .btn-next:hover .arrow { transform: translateX(4px); }
 
-    /* ─── CONFETTI ─── */
     #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 99; }
 
-    /* ─── DISCLAIMER page special styles ─── */
     .disclaimer-badge {
       display: inline-block;
       background: #f9a825; color: #1a0a2e;
@@ -221,8 +197,6 @@
       margin-top: 10px; text-align: right;
     }
 
-    /* page corner fold */
-    .page::after { border-radius: 18px 4px 4px 18px; }
     .fold {
       position: absolute; bottom: 0; right: 0;
       width: 0; height: 0;
@@ -233,7 +207,6 @@
       z-index: 5;
     }
 
-    /* envelope intro */
     .envelope-screen {
       position: fixed; inset: 0; z-index: 200;
       background: #1a0a2e;
@@ -249,54 +222,42 @@
       0%,100%{ transform: translateY(0) scale(1); }
       50%    { transform: translateY(-12px) scale(1.06); }
     }
-    .env-title {
-      font-family: 'Caveat', cursive; font-size: 32px;
-      color: white; font-weight: 700;
-    }
+    .env-title { font-family: 'Caveat', cursive; font-size: 32px; color: white; font-weight: 700; }
     .env-hint {
       font-size: 13px; color: rgba(255,255,255,0.4);
       font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
       animation: blink 1.5s ease-in-out infinite;
     }
     @keyframes blink { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
-    /* ── Corner Doodles ── */
-.doodle-corner {
-  position: absolute;
-  font-size: 22px;
-  pointer-events: none;
-  z-index: 6;
-  animation: doodleSpin 4s ease-in-out infinite;
-}
-@keyframes doodleSpin {
-  0%,100% { transform: rotate(-10deg) scale(1); }
-  50%     { transform: rotate(10deg) scale(1.15); }
-}
-.doodle-tl { top: 10px;  left: 52px;  animation-delay: 0s; }
-.doodle-tr { top: 10px;  right: 10px; animation-delay: 0.4s; }
-.doodle-bl { bottom: 10px; left: 52px;  animation-delay: 0.8s; }
+
+    .doodle-corner {
+      position: absolute; font-size: 22px;
+      pointer-events: none; z-index: 6;
+      animation: doodleSpin 4s ease-in-out infinite;
+    }
+    @keyframes doodleSpin {
+      0%,100% { transform: rotate(-10deg) scale(1); }
+      50%     { transform: rotate(10deg) scale(1.15); }
+    }
+    .doodle-tl { top: 10px;  left: 52px;  animation-delay: 0s; }
+    .doodle-tr { top: 10px;  right: 10px; animation-delay: 0.4s; }
+    .doodle-bl { bottom: 10px; left: 52px; animation-delay: 0.8s; }
   </style>
 </head>
 <body>
 
-<!-- stars -->
 <div class="stars" id="stars"></div>
-<!-- confetti -->
 <canvas id="confetti"></canvas>
 
-<!-- ─── ENVELOPE INTRO SCREEN ─── -->
 <div class="envelope-screen" id="envScreen" onclick="openEnvelope()">
   <div class="env-emoji">✉️</div>
   <div class="env-title">oru small kaditham for you</div>
   <div class="env-hint">tap to pakka</div>
 </div>
 
-<!-- ─── MAIN STAGE ─── -->
 <div class="stage">
-
-  <!-- dots -->
   <div class="page-dots" id="dots"></div>
 
-  <!-- letter box -->
   <div class="letter-wrap">
 
     <!-- PAGE 1 -->
@@ -306,7 +267,7 @@
       <span class="doodle-corner doodle-tr">⭐</span>
       <span class="doodle-corner doodle-bl">🎀</span>
       <div class="page-content">
-        <div class="page-body">
+        <div class="page-body" id="body-0">
           <span class="big">Hello, Madam. 👋</span>
           a small present from your erumai<br>
           a <span class="pink">whole letter</span> just for you.<br><br>
@@ -325,7 +286,7 @@
       <span class="doodle-corner doodle-tl">💕</span>
       <span class="doodle-corner doodle-tr">🌙</span>
       <div class="page-content">
-        <div class="page-body">
+        <div class="page-body" id="body-1">
           Ethuvum shock lam avanthinga<br>
           for saying this<br>
           <span class="pink">but itha sollanumnu thonuchu</span><br><br>
@@ -346,7 +307,7 @@
       <span class="doodle-corner doodle-tl">💜</span>
       <span class="doodle-corner doodle-tr">🦋</span>
       <div class="page-content">
-        <div class="page-body">
+        <div class="page-body" id="body-2">
           na etho romba easya sollten<br>
           i can be your friend<br>
           <span class="pur">ana</span> i don't think it is possible<br><br>
@@ -361,13 +322,13 @@
       <div class="fold"></div>
     </div>
 
-    <!-- PAGE 4 — I love you -->
+    <!-- PAGE 4 -->
     <div class="page page-4" id="page-3">
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <span class="doodle-corner doodle-tl">💚</span>
       <span class="doodle-corner doodle-tr">🌿</span>
       <div class="page-content">
-        <div class="page-body">
+        <div class="page-body" id="body-3">
           So, ippave solliren<br><br>
           The thing I've been<br>
           too nervous to say —<br><br>
@@ -382,16 +343,17 @@
       <div class="fold"></div>
     </div>
 
-    <!-- PAGE 5 — Disclaimer -->
+    <!-- PAGE 5 -->
     <div class="page page-5" id="page-4">
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <span class="doodle-corner doodle-tl">⚠️</span>
       <span class="doodle-corner doodle-tr">📋</span>
+      <span class="doodle-corner doodle-bl">💛</span>
       <div class="page-content">
-        <div class="page-body">
-          <span class="disclaimer-badge">⚠️Oru mukiya thagaval!</span>
+        <div class="page-body" id="body-4">
+          <span class="disclaimer-badge">⚠️ Oru mukiya thagaval!</span>
           <div class="mono">
-            <span class="clause">This letter has been delivered in good faith & with maximum sincerity.</span>
+            <span class="clause">This letter has been delivered in good faith &amp; with maximum sincerity.</span>
             <span class="clause">The sender does <strong>NOT</strong> have server storage, a database, or a cloud plan.</span>
             <span class="clause">Your reply <em>cannot</em> be accepted here, unfortunately.</span>
             <span class="clause">So unga replya <strong>WhatsApp / insta / IRL</strong> sollalam</span>
@@ -405,13 +367,14 @@
 
   </div><!-- /letter-wrap -->
 
-  <!-- next button -->
   <div class="btn-wrap">
     <button class="btn-next" id="nextBtn" onclick="nextPage()">
       Next page <span class="arrow">→</span>
     </button>
   </div>
-</div><!-- /stage -->
+</div>
+
+<canvas id="trailCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:998;"></canvas>
 
 <script>
   /* ─── stars ─── */
@@ -425,19 +388,69 @@
   }
 
   /* ─── floating hearts ─── */
-  const hEmojis = ['💕'];
   for (let i = 0; i < 12; i++) {
     const h = document.createElement('div');
     h.className = 'heart-float';
-    h.textContent = hEmojis[Math.floor(Math.random() * hEmojis.length)];
+    h.textContent = '💕';
     h.style.cssText = `left:${Math.random()*100}vw;animation-duration:${10+Math.random()*10}s;animation-delay:${Math.random()*10}s`;
     document.body.appendChild(h);
   }
 
-  /* ─── page logic ─── */
+  /* ─── THE FIX: store content in JS strings, NOT from DOM ─── */
+  /* This way nothing ever gets wiped */
+  const PAGE_CONTENT = {
+    0: `<span class="big">Hello, Madam. 👋</span>
+          a small present from your erumai<br>
+          a <span class="pink">whole letter</span> just for you.<br><br>
+          Yes. You deserve it.<br>
+          (maybe more, but<br>
+          let's start here 😌)
+          <div class="doodle">🌸</div>`,
+
+    1: `Ethuvum shock lam avanthinga<br>
+          for saying this<br>
+          <span class="pink">but itha sollanumnu thonuchu</span><br><br>
+          But every time<br>
+          I try, my brain just<br>
+          goes — <span class="accent">🫠 bloop.</span><br><br>
+          So I made this<br>
+          instead. 🤭
+          <div class="doodle">✨</div>`,
+
+    2: `na etho romba easya sollten<br>
+          i can be your friend<br>
+          <span class="pur">ana</span> i don't think it is possible<br><br>
+          And honestly?<br>
+          I don't mind one bit.<br><br>
+          You're kinda<br>
+          <span class="pur">different</span>. And that's<br>
+          my favourite thing. 🫶
+          <div class="doodle">💜</div>`,
+
+    3: `So, ippave solliren<br><br>
+          The thing I've been<br>
+          too nervous to say —<br><br>
+          <span class="grn" style="font-size:clamp(28px,8vw,38px);display:block;line-height:1.3;">
+            I love you. 💞
+          </span><br>
+          avalothaan na solten !!!<br>
+          No taking it back 😄
+          <div class="doodle">🌿</div>`,
+
+    4: `<span class="disclaimer-badge">⚠️ Oru mukiya thagaval!</span>
+          <div class="mono">
+            <span class="clause">This letter has been delivered in good faith &amp; with maximum sincerity.</span>
+            <span class="clause">Enkita <strong>NOT</strong> server storage, a database, or a cloud plan ethuvum illa.</span>
+            <span class="clause">Your reply <em>cannot</em> be accepted here, unfortunately.</span>
+            <span class="clause">So unga replya <strong>WhatsApp / insta / IRL</strong> sollalam</span>
+            <span class="clause">Silence will be interpreted as <em>processing time</em>. 🙂</span>
+          </div>
+          <div class="sign-off">— naanthaan 💛</div>`
+  };
+
+  /* ─── dots ─── */
   const TOTAL = 5;
   let current = 0;
-
   const dotsEl = document.getElementById('dots');
   for (let i = 0; i < TOTAL; i++) {
     const d = document.createElement('div');
@@ -445,7 +458,6 @@
     d.id = 'dot-' + i;
     dotsEl.appendChild(d);
   }
-
   function updateDots() {
     for (let i = 0; i < TOTAL; i++) {
       const d = document.getElementById('dot-' + i);
@@ -453,79 +465,69 @@
     }
   }
 
- // ── store original HTML once on load ──
-  const pageOriginals = {};
-  document.querySelectorAll('.page-body').forEach((body, idx) => {
-    pageOriginals[idx] = body.innerHTML;
-  });
-
+  /* ─── typewriter: reads from PAGE_CONTENT, never touches DOM source ─── */
   function typewritePage(pageIndex) {
-    const page = document.getElementById('page-' + pageIndex);
-    const body = page.querySelector('.page-body');
+    const body = document.getElementById('body-' + pageIndex);
     if (!body) return;
 
-    // restore original HTML first (fixes pages getting wiped)
-    body.innerHTML = pageOriginals[pageIndex];
+    const fullHTML = PAGE_CONTENT[pageIndex];
+    if (!fullHTML) return;
 
-    const doodle = body.querySelector('.doodle');
-    const doodleHTML = doodle ? doodle.outerHTML : '';
-
-    // grab full HTML without the doodle
-    const temp = document.createElement('div');
-    temp.innerHTML = body.innerHTML;
-    if (temp.querySelector('.doodle')) temp.querySelector('.doodle').remove();
-    const fullHTML = temp.innerHTML;
-
-    // clear body, keep doodle at end
-    body.innerHTML = '<span id="tw-target"></span>' + doodleHTML;
-    const target = document.getElementById('tw-target');
-
+    // Split into tokens: tags vs characters
+    const tokens = [];
     let i = 0;
-    let rendered = '';
-
-    function type() {
-      if (i >= fullHTML.length) return;
-
+    while (i < fullHTML.length) {
       if (fullHTML[i] === '<') {
-        // grab the whole tag at once — never delay on tags
         let tag = '';
-        while (i < fullHTML.length && fullHTML[i] !== '>') {
-          tag += fullHTML[i];
-          i++;
-        }
-        tag += '>';
-        i++;
-        rendered += tag;
-        target.innerHTML = rendered;
-        setTimeout(type, 0); // no delay for tags
+        while (i < fullHTML.length && fullHTML[i] !== '>') { tag += fullHTML[i]; i++; }
+        tag += '>'; i++;
+        tokens.push({ type: 'tag', val: tag });
       } else {
-        rendered += fullHTML[i];
+        tokens.push({ type: 'char', val: fullHTML[i] });
         i++;
-        target.innerHTML = rendered;
-        setTimeout(type, 30); // delay only for visible characters
       }
     }
 
+    body.innerHTML = '';
+    let rendered = '';
+    let t = 0;
+
+    function type() {
+      if (t >= tokens.length) return;
+      const token = tokens[t]; t++;
+      rendered += token.val;
+      body.innerHTML = rendered;
+      // tags instant, chars have delay
+      setTimeout(type, token.type === 'tag' ? 0 : 22);
+    }
     type();
   }
+
+  /* ─── page navigation ─── */
   function nextPage() {
     if (current >= TOTAL - 1) return;
     const leaving = document.getElementById('page-' + current);
     leaving.classList.remove('active');
     leaving.classList.add('exit');
     setTimeout(() => leaving.classList.remove('exit'), 600);
+
     current++;
     const arriving = document.getElementById('page-' + current);
     arriving.classList.add('active');
     updateDots();
     typewritePage(current);
+
     if (current === TOTAL - 1) {
       document.getElementById('nextBtn').classList.add('hidden');
       launchConfetti();
     }
     if (current === 3) smallConfetti();
   }
-  /* ─── envelope open ─── */
+
+  /* ─── typewrite page 1 on load too ─── */
+  window.addEventListener('load', () => typewritePage(0));
+
+  /* ─── envelope ─── */
   function openEnvelope() {
     document.getElementById('envScreen').classList.add('hide');
   }
@@ -534,40 +536,26 @@
   const canvas = document.getElementById('confetti');
   const ctx = canvas.getContext('2d');
   let particles = [];
-
   function spawnParticles(n, colors) {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     for (let i = 0; i < n; i++) {
       particles.push({
-        x: Math.random() * canvas.width,
-        y: -20,
+        x: Math.random() * canvas.width, y: -20,
         w: 6 + Math.random() * 10, h: 4 + Math.random() * 6,
         color: colors[Math.floor(Math.random() * colors.length)],
-        angle: Math.random() * 360,
-        spin: (Math.random() - 0.5) * 7,
-        vx: (Math.random() - 0.5) * 5,
-        vy: 2 + Math.random() * 4,
-        life: 1
+        angle: Math.random() * 360, spin: (Math.random() - 0.5) * 7,
+        vx: (Math.random() - 0.5) * 5, vy: 2 + Math.random() * 4
       });
     }
     requestAnimationFrame(drawConfetti);
   }
-
-  function launchConfetti() {
-    spawnParticles(200, ['#ff6b9d','#ffd93d','#6bcb77','#c77dff','#ffb347','#4cc9f0','#ff85b3']);
-  }
-  function smallConfetti() {
-    spawnParticles(80, ['#2e7d32','#a5d6a7','#ffeb3b','#ffffff']);
-  }
-
+  function launchConfetti() { spawnParticles(200, ['#ff6b9d','#ffd93d','#6bcb77','#c77dff','#ffb347','#4cc9f0','#ff85b3']); }
+  function smallConfetti()  { spawnParticles(80,  ['#2e7d32','#a5d6a7','#ffeb3b','#ffffff']); }
   function drawConfetti() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles = particles.filter(p => p.y < canvas.height + 20);
     particles.forEach(p => {
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.angle * Math.PI / 180);
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.angle * Math.PI / 180);
       ctx.fillStyle = p.color; ctx.globalAlpha = 0.88;
       ctx.beginPath(); ctx.ellipse(0,0,p.w/2,p.h/2,0,0,2*Math.PI); ctx.fill();
       ctx.restore();
@@ -576,32 +564,25 @@
     if (particles.length) requestAnimationFrame(drawConfetti);
     else ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
-</script>
-  <!-- EMOJI BURST + CURSOR TRAIL -->
-<canvas id="trailCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:998;"></canvas>
-<script>
-  // ── Cursor Trail ──
+
+  /* ─── cursor trail ─── */
   const tc = document.getElementById('trailCanvas');
   const tx = tc.getContext('2d');
   tc.width = window.innerWidth; tc.height = window.innerHeight;
   window.addEventListener('resize', () => { tc.width = window.innerWidth; tc.height = window.innerHeight; });
   let trail = [];
-  const trailEmojis = ['💖'];
-  document.addEventListener('mousemove', e => {
-    trail.push({ x: e.clientX, y: e.clientY, emoji: trailEmojis[Math.floor(Math.random()*trailEmojis.length)], life: 1, size: 14+Math.random()*10 });
+  function addTrail(x, y) {
+    trail.push({ x, y, life: 1, size: 14 + Math.random() * 10 });
     if (trail.length > 18) trail.shift();
-  });
-  document.addEventListener('touchmove', e => {
-    const t = e.touches[0];
-    trail.push({ x: t.clientX, y: t.clientY, emoji: trailEmojis[Math.floor(Math.random()*trailEmojis.length)], life: 1, size: 14+Math.random()*10 });
-    if (trail.length > 18) trail.shift();
-  }, { passive: true });
+  }
+  document.addEventListener('mousemove', e => addTrail(e.clientX, e.clientY));
+  document.addEventListener('touchmove', e => addTrail(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
   function drawTrail() {
     tx.clearRect(0, 0, tc.width, tc.height);
-    trail.forEach((p, i) => {
+    trail.forEach(p => {
       tx.globalAlpha = p.life * 0.8;
       tx.font = `${p.size}px serif`;
-      tx.fillText(p.emoji, p.x - p.size/2, p.y + p.size/2);
+      tx.fillText('💖', p.x - p.size / 2, p.y + p.size / 2);
       p.life -= 0.06;
     });
     trail = trail.filter(p => p.life > 0);
@@ -609,7 +590,7 @@
   }
   drawTrail();
 
-  // ── Emoji Burst on Click ──
+  /* ─── emoji burst on click ─── */
   const burstEmojis = ['💖'];
   document.addEventListener('click', e => {
     if (e.target.closest('#nextBtn') || e.target.closest('#envScreen')) return;
