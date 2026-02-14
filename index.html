@@ -324,7 +324,6 @@
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <span class="doodle-corner doodle-tl">💕</span>
       <span class="doodle-corner doodle-tr">🌙</span>
-      <span class="doodle-corner doodle-bl">✨</span>
       <div class="page-content">
         <div class="page-body">
           Ethuvum shock lam avanthinga<br>
@@ -346,7 +345,6 @@
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <span class="doodle-corner doodle-tl">💜</span>
       <span class="doodle-corner doodle-tr">🦋</span>
-      <span class="doodle-corner doodle-bl">🌟</span>
 
       <div class="page-content">
         <div class="page-body">
@@ -369,7 +367,6 @@
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <span class="doodle-corner doodle-tl">💚</span>
       <span class="doodle-corner doodle-tr">🌿</span>
-      <span class="doodle-corner doodle-bl">🍀</span>
 
       <div class="page-content">
         <div class="page-body">
@@ -432,7 +429,7 @@
   }
 
   /* ─── floating hearts ─── */
-  const hEmojis = ['💖','💕','💗','🌸','✨','💫','💝'];
+  const hEmojis = ['💕'];
   for (let i = 0; i < 12; i++) {
     const h = document.createElement('div');
     h.className = 'heart-float';
@@ -574,7 +571,7 @@
   tc.width = window.innerWidth; tc.height = window.innerHeight;
   window.addEventListener('resize', () => { tc.width = window.innerWidth; tc.height = window.innerHeight; });
   let trail = [];
-  const trailEmojis = ['💖','✨','💫','🌸','⭐','💕'];
+  const trailEmojis = ['💖'];
   document.addEventListener('mousemove', e => {
     trail.push({ x: e.clientX, y: e.clientY, emoji: trailEmojis[Math.floor(Math.random()*trailEmojis.length)], life: 1, size: 14+Math.random()*10 });
     if (trail.length > 18) trail.shift();
