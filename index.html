@@ -454,42 +454,61 @@
     }
   }
 
+ // ── store original HTML once on load ──
+  const pageOriginals = {};
+  document.querySelectorAll('.page-body').forEach((body, idx) => {
+    pageOriginals[idx] = body.innerHTML;
+  });
+
   function typewritePage(pageIndex) {
     const page = document.getElementById('page-' + pageIndex);
     const body = page.querySelector('.page-body');
     if (!body) return;
-    const original = body.innerHTML;
-    // strip to plain text nodes only, preserve doodle div
+
+    // restore original HTML first (fixes pages getting wiped)
+    body.innerHTML = pageOriginals[pageIndex];
+
     const doodle = body.querySelector('.doodle');
     const doodleHTML = doodle ? doodle.outerHTML : '';
-    // get text content with spans preserved via a temp trick
+
+    // grab full HTML without the doodle
     const temp = document.createElement('div');
-    temp.innerHTML = original.replace(doodle ? doodle.outerHTML : '__NO_DOODLE__', '');
+    temp.innerHTML = body.innerHTML;
+    if (temp.querySelector('.doodle')) temp.querySelector('.doodle').remove();
     const fullHTML = temp.innerHTML;
+
+    // clear body, keep doodle at end
     body.innerHTML = '<span id="tw-target"></span>' + doodleHTML;
     const target = document.getElementById('tw-target');
-    // type char by char using innerHTML stream
-    let i = 0; let rendered = '';
-    const chars = fullHTML.split('');
-    let insideTag = false;
+
+    let i = 0;
+    let rendered = '';
+
     function type() {
-      if (i >= chars.length) return;
-      const ch = chars[i];
-      if (ch === '<') insideTag = true;
-      if (!insideTag) {
-        rendered += ch;
-        target.innerHTML = rendered;
-      } else {
+      if (i >= fullHTML.length) return;
+
+      if (fullHTML[i] === '<') {
+        // grab the whole tag at once — never delay on tags
         let tag = '';
-        while (i < chars.length && chars[i] !== '>') { tag += chars[i]; i++; }
-        tag += '>'; rendered += tag; target.innerHTML = rendered; insideTag = false;
+        while (i < fullHTML.length && fullHTML[i] !== '>') {
+          tag += fullHTML[i];
+          i++;
+        }
+        tag += '>';
+        i++;
+        rendered += tag;
+        target.innerHTML = rendered;
+        setTimeout(type, 0); // no delay for tags
+      } else {
+        rendered += fullHTML[i];
+        i++;
+        target.innerHTML = rendered;
+        setTimeout(type, 30); // delay only for visible characters
       }
-      i++;
-      setTimeout(type, insideTag ? 0 : 28);
     }
+
     type();
   }
-
   function nextPage() {
     if (current >= TOTAL - 1) return;
     const leaving = document.getElementById('page-' + current);
