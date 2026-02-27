@@ -1,16 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-537CDEWP3R"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-  
-    gtag('config', 'G-537CDEWP3R');
-  </script>
-  
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>a Letter For You</title>
@@ -37,15 +27,32 @@
       50%    { opacity: 0.9; transform: scale(1.4); }
     }
 
+    /* ── ambient floating hearts (always present, subtle) ── */
     .heart-float {
       position: fixed; pointer-events: none; z-index: 0;
       font-size: 18px; animation: floatHeart linear infinite; opacity: 0;
     }
     @keyframes floatHeart {
-      0%  { transform: translateY(110vh); opacity: 0; }
-      10% { opacity: 0.6; }
-      90% { opacity: 0.4; }
-      100%{ transform: translateY(-10vh); opacity: 0; }
+      0%  { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.5; }
+      90% { opacity: 0.3; }
+      100%{ transform: translateY(-10vh) rotate(20deg); opacity: 0; }
+    }
+
+    /* ── BURST hearts that shoot up on last page ── */
+    .burst-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 100;
+      font-size: 28px;
+      animation: burstFloat linear forwards;
+      opacity: 0;
+    }
+    @keyframes burstFloat {
+      0%   { transform: translateY(0) scale(0.3) rotate(0deg); opacity: 0; }
+      10%  { opacity: 1; transform: translateY(-60px) scale(1.1) rotate(-10deg); }
+      80%  { opacity: 0.8; }
+      100% { transform: translateY(-90vh) scale(0.7) rotate(30deg); opacity: 0; }
     }
 
     .stage {
@@ -189,8 +196,6 @@
     .arrow { font-size: 18px; transition: transform 0.3s; }
     .btn-next:hover .arrow { transform: translateX(4px); }
 
-    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 99; }
-
     .disclaimer-badge {
       display: inline-block;
       background: #f9a825; color: #1a0a2e;
@@ -264,7 +269,6 @@
 <body>
 
 <div class="stars" id="stars"></div>
-<canvas id="confetti"></canvas>
 
 <div class="envelope-screen" id="envScreen" onclick="openEnvelope()">
   <div class="env-emoji">✉️</div>
@@ -283,17 +287,7 @@
       <span class="doodle-corner doodle-tl">🌸</span>
       <span class="doodle-corner doodle-tr">⭐</span>
       <div class="page-content">
-        <div class="page-body" id="body-0">
-          <span class="big">Hello, Madam. 👋</span>
-          ungaluku manasatchi iruka<br>
-          oruthaa <span class="pink">ungalukaga </span> okanthu ready pannirukane<br><br>
-          pavam, nalla iruku illa nalla illanu<br>
-          oru reply podalame<br>
-          apdinla illama ghost panringa<br>
-          ithula thirumba revisit vera panringa<br><br>
-          innum iruku next page ponga
-          <div class="doodle">🌸</div>
-        </div>
+        <div class="page-body" id="body-0"></div>
       </div>
       <div class="fold"></div>
     </div>
@@ -304,16 +298,7 @@
       <span class="doodle-corner doodle-tl">💕</span>
       <span class="doodle-corner doodle-tr">🌙</span>
       <div class="page-content">
-        <div class="page-body" id="body-1">
-          thirumba itha pakanumna<br>
-          avankita poi crcta oru bathila sollunga<br>
-          <span class="pink">yes or no</span><br>
-          illa <span class="pink">poda dei olunga odi poiru</span><br><br>
-          then na itha palaya maari mathaa vaipiruku<br>
-          atha vitutu<span class="accent"> thirumba ghost panna</span><br>
-          avlothaan<br>
-          <div class="doodle">✨</div>
-        </div>
+        <div class="page-body" id="body-1"></div>
       </div>
       <div class="fold"></div>
     </div>
@@ -324,11 +309,7 @@
       <span class="doodle-corner doodle-tl">💜</span>
       <span class="doodle-corner doodle-tr">🦋</span>
       <div class="page-content">
-        <div class="page-body" id="body-2">
-          <br><br><br>
-          innu nee pogama okanthu next kuduthutu iruka
-          <div class="doodle">💜</div>
-        </div>
+        <div class="page-body" id="body-2"></div>
       </div>
       <div class="fold"></div>
     </div>
@@ -339,12 +320,7 @@
       <span class="doodle-corner doodle-tl">💚</span>
       <span class="doodle-corner doodle-tr">🌿</span>
       <div class="page-content">
-        <div class="page-body" id="body-3">
-          <br><br><br>
-          Aii pooi reply pannu ippave<br>
-          avan romba paavam 😖
-          <div class="doodle">🌿</div>
-        </div>
+        <div class="page-body" id="body-3"></div>
       </div>
     </div>
 
@@ -355,13 +331,7 @@
       <span class="doodle-corner doodle-tr">📋</span>
       <span class="doodle-corner doodle-bl">💛</span>
       <div class="page-content">
-        <div class="page-body" id="body-4">
-          <span class="disclaimer-badge">⚠️ Oru mukiya thagaval!</span>
-          <div class="mono">
-            <span class="clause">Inga ethuvum illa</span>
-          </div>
-          <div class="sign-off">— naanthaan 💛</div>
-        </div>
+        <div class="page-body" id="body-4"></div>
       </div>
     </div>
 
@@ -387,24 +357,23 @@
     starContainer.appendChild(s);
   }
 
-  /* ─── floating hearts ─── */
+  /* ─── ambient floating hearts ─── */
   for (let i = 0; i < 12; i++) {
     const h = document.createElement('div');
     h.className = 'heart-float';
-    h.textContent = '💕';
+    h.textContent = ['💕','💖','💗','💓'][Math.floor(Math.random()*4)];
     h.style.cssText = `left:${Math.random()*100}vw;animation-duration:${10+Math.random()*10}s;animation-delay:${Math.random()*10}s`;
     document.body.appendChild(h);
   }
 
-  /* ─── THE FIX: store content in JS strings, NOT from DOM ─── */
-  /* This way nothing ever gets wiped */
+  /* ─── PAGE CONTENT ─── */
   const PAGE_CONTENT = {
     0: `<span class="big">Hello, Madam. 👋</span>
          a small present from your erumai<br>
           a <span class="pink">whole letter</span> just for you.<br><br>
           Yes. You deserve it.<br>
           (maybe more, but<br>
-          let's start here 😌)',
+          let's start here 😌)`,
           
     1: `Ethuvum shock lam avanthinga<br>
           for saying this<br>
@@ -460,15 +429,13 @@
     }
   }
 
-  /* ─── typewriter: reads from PAGE_CONTENT, never touches DOM source ─── */
+  /* ─── typewriter ─── */
   function typewritePage(pageIndex) {
     const body = document.getElementById('body-' + pageIndex);
     if (!body) return;
-
     const fullHTML = PAGE_CONTENT[pageIndex];
     if (!fullHTML) return;
 
-    // Split into tokens: tags vs characters
     const tokens = [];
     let i = 0;
     while (i < fullHTML.length) {
@@ -492,10 +459,42 @@
       const token = tokens[t]; t++;
       rendered += token.val;
       body.innerHTML = rendered;
-      // tags instant, chars have delay
       setTimeout(type, token.type === 'tag' ? 0 : 22);
     }
     type();
+  }
+
+  /* ─── HEART BURST — replaces confetti ─── */
+  const HEART_EMOJIS = ['💖','💕','💗','💓','💞','💘','🩷','❤️','💝'];
+
+  function launchHearts() {
+    const count = 60;
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'burst-heart';
+        el.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
+
+        // Random horizontal position across full screen
+        const startX = 5 + Math.random() * 90; // 5–95vw
+        const fontSize = 20 + Math.random() * 30; // 20–50px
+        const duration = 2.5 + Math.random() * 3;  // 2.5–5.5s
+        const delay = Math.random() * 0.4;
+
+        el.style.cssText = `
+          left: ${startX}vw;
+          bottom: ${-fontSize}px;
+          font-size: ${fontSize}px;
+          animation-duration: ${duration}s;
+          animation-delay: ${delay}s;
+        `;
+
+        document.body.appendChild(el);
+
+        // Remove after animation is done
+        setTimeout(() => el.remove(), (duration + delay + 0.5) * 1000);
+      }, i * 60); // stagger each heart by 60ms
+    }
   }
 
   /* ─── page navigation ─── */
@@ -512,12 +511,40 @@
     updateDots();
     typewritePage(current);
 
+    // Launch heart burst on EVERY page turn (big burst on last page)
     if (current === TOTAL - 1) {
       document.getElementById('nextBtn').classList.add('hidden');
+      launchHearts(); // big burst on last page
+    } else {
+      // small sprinkle on each page turn
+      launchMiniHearts();
     }
   }
 
-  /* ─── typewrite page 1 on load too ─── */
+  /* ─── small heart sprinkle on each page turn ─── */
+  function launchMiniHearts() {
+    for (let i = 0; i < 15; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'burst-heart';
+        el.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
+        const startX = 5 + Math.random() * 90;
+        const fontSize = 14 + Math.random() * 16;
+        const duration = 1.8 + Math.random() * 1.5;
+        el.style.cssText = `
+          left: ${startX}vw;
+          bottom: ${-fontSize}px;
+          font-size: ${fontSize}px;
+          animation-duration: ${duration}s;
+          animation-delay: 0s;
+        `;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), (duration + 0.5) * 1000);
+      }, i * 50);
+    }
+  }
+
+  /* ─── typewrite page 0 on load ─── */
   window.addEventListener('load', () => typewritePage(0));
 
   /* ─── envelope ─── */
@@ -525,44 +552,13 @@
     document.getElementById('envScreen').classList.add('hide');
   }
 
-  /* ─── confetti ─── */
-  const canvas = document.getElementById('confetti');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  function spawnParticles(n, colors) {
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    for (let i = 0; i < n; i++) {
-      particles.push({
-        x: Math.random() * canvas.width, y: -20,
-        w: 6 + Math.random() * 10, h: 4 + Math.random() * 6,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        angle: Math.random() * 360, spin: (Math.random() - 0.5) * 7,
-        vx: (Math.random() - 0.5) * 5, vy: 2 + Math.random() * 4
-      });
-    }
-    requestAnimationFrame(drawConfetti);
-  }
-  function launchConfetti() { spawnParticles(200, ['#ff6b9d','#ffd93d','#6bcb77','#c77dff','#ffb347','#4cc9f0','#ff85b3']); }
-  function smallConfetti()  { spawnParticles(80,  ['#2e7d32','#a5d6a7','#ffeb3b','#ffffff']); }
-  function drawConfetti() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles = particles.filter(p => p.y < canvas.height + 20);
-    particles.forEach(p => {
-      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.angle * Math.PI / 180);
-      ctx.fillStyle = p.color; ctx.globalAlpha = 0.88;
-      ctx.beginPath(); ctx.ellipse(0,0,p.w/2,p.h/2,0,0,2*Math.PI); ctx.fill();
-      ctx.restore();
-      p.x += p.vx; p.y += p.vy; p.angle += p.spin;
-    });
-    if (particles.length) requestAnimationFrame(drawConfetti);
-    else ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-
   /* ─── cursor trail ─── */
   const tc = document.getElementById('trailCanvas');
   const tx = tc.getContext('2d');
   tc.width = window.innerWidth; tc.height = window.innerHeight;
-  window.addEventListener('resize', () => { tc.width = window.innerWidth; tc.height = window.innerHeight; });
+  window.addEventListener('resize', () => {
+    tc.width = window.innerWidth; tc.height = window.innerHeight;
+  });
   let trail = [];
   function addTrail(x, y) {
     trail.push({ x, y, life: 1, size: 14 + Math.random() * 10 });
@@ -584,7 +580,6 @@
   drawTrail();
 
   /* ─── emoji burst on click ─── */
-  const burstEmojis = ['💖'];
   document.addEventListener('click', e => {
     if (e.target.closest('#nextBtn') || e.target.closest('#envScreen')) return;
     for (let i = 0; i < 10; i++) {
@@ -594,7 +589,7 @@
       const dx = Math.cos(angle) * dist;
       const dy = Math.sin(angle) * dist;
       const size = 16 + Math.random() * 16;
-      el.textContent = burstEmojis[Math.floor(Math.random() * burstEmojis.length)];
+      el.textContent = '💖';
       el.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;font-size:${size}px;pointer-events:none;z-index:997;transition:transform 0.6s ease-out,opacity 0.6s ease-out;transform:translate(-50%,-50%);`;
       document.body.appendChild(el);
       requestAnimationFrame(() => {
